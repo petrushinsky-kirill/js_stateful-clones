@@ -11,28 +11,53 @@ function transformStateWithClones(state, actions) {
   let currentState = { ...state };
 
   for (const action of actions) {
-    if (action.type === 'addProperties') {
-      currentState = Object.assign({}, currentState, action.extraData);
-    }
+    switch (action.type) {
+      case 'addProperties':
+        currentState = Object.assign({}, currentState, action.extraData);
+        break;
 
-    if (action.type === 'removeProperties') {
-      currentState = Object.assign({}, currentState);
+      case 'removeProperties':
+        currentState = Object.assign({}, currentState);
 
-      for (const key of action.keysToRemove) {
-        delete currentState[key];
-      }
-    }
+        for (const key of action.keysToRemove) {
+          delete currentState[key];
+        }
+        break;
 
-    if (action.type === 'clear') {
-      currentState = Object.assign({}, currentState);
+      case 'clear':
+        currentState = {};
+        break;
 
-      for (const item in currentState) {
-        delete currentState[item];
-      }
+      default:
+        continue;
     }
 
     statesArray.push({ ...currentState });
   }
+
+  // for (const action of actions) {
+  //   if (action.type === 'addProperties') {
+  //     currentState = Object.assign({}, currentState, action.extraData);
+  //   }
+
+  //   if (action.type === 'removeProperties') {
+  //     currentState = Object.assign({}, currentState);
+
+  //     for (const key of action.keysToRemove) {
+  //       delete currentState[key];
+  //     }
+  //   }
+
+  //   if (action.type === 'clear') {
+  //     currentState = Object.assign({}, currentState);
+
+  //     for (const item in currentState) {
+  //       delete currentState[item];
+  //     }
+  //   }
+
+  //   statesArray.push({ ...currentState });
+  // }
 
   return statesArray;
 }
